@@ -11,16 +11,10 @@ import (
 func main() {
 	e := echo.New()
 
-	// Inisialisasi koneksi database
-	err := postgres.DatabaseConnection()
-	if err != nil {
-		fmt.Println("Gagal terhubung ke database")
-		return
-	}
+	postgres.DatabaseConnection()
 
-	e.GET("/tsm/api/v1/buildingData", routes.GetBuildingData)
-	e.GET("/tsm/api/v1/visitors", routes.GetVisitors)
+	routes.RouteInit(e.Group("tsm/api/v1"))
 
 	fmt.Println("Server running on localhost:5000")
-	e.Logger.Fatal(e.Start(":5000"))
+	e.Logger.Fatal(e.Start("localhost:5000"))
 }
